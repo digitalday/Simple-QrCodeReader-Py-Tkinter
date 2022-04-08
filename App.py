@@ -22,6 +22,7 @@ def upload():
         for barcode in barcodes:
             barcodedata = barcode.data.decode('utf-8')
             print(f'Result: {barcodedata}')
+        text.delete(1.0, END)
         text.insert(1.0, barcodedata)
 
         img = Image.open(filename)
@@ -61,7 +62,7 @@ root.title('QrCodeReader')  # title
 root.config(bg='#EFEAEB')
 root.geometry("600x600+40+40")  # размер и положение
 root.resizable(False, False)  # возможность изменять размер окна
-logo = tk.PhotoImage(file='myQrCode.png')  # добавляем логотип к переменной лого
+logo = tk.PhotoImage(file='QrWelcome.png')  # добавляем логотип к переменной лого
 root.iconphoto(False, logo)  # присовение нашего логотипа к приложению
 label_logo = tk.Label(root, text='QrCodeReader',  # создание текста
                       bg='#EFEAEB',  # фон шрифта для текста
