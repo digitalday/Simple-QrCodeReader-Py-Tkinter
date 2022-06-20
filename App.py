@@ -1,36 +1,36 @@
-from tkinter import *
 import tkinter as tk
 import tkinter.filedialog as fd
+from tkinter import *
+from tkinter import messagebox as mbox
 
 
 import qrcode
-import cv2
-from pyzbar import pyzbar
-from PIL import ImageTk, Image
+from pyzbar.pyzbar import decode
+from PIL import Image,ImageTk
+
+
+def onInfo():
+    mbox.showinfo("Информация", "Ваш QR код сгенерирован")
+
+def onError():
+    mbox.showerror("Ошибка", "Не могу открыть файл")
+
 
 
 def upload():
-    filename = fd.askopenfilename(title="Add QR", initialdir="/",
-                                  filetypes=[('JPG file', '*.jpg'),
-                                             ('PNG file', '*.png'),
-                                             ('PDF file', '*.pdf')],)
-
+    filename = fd.askopenfilename(filetypes=[('JPG file', '*.jpg'),
+                                           ('PNG file', '*.png'),
+                                           ('PDF file', '*.pdf')],
+                                defaultextension='.png'
+                                )
     if filename:
-        read = cv2.imread(filename)
-        barcodes = pyzbar.decode(read)
-
-        for barcode in barcodes:
-            barcodedata = barcode.data.decode('utf-8')
-            print(f'Result: {barcodedata}')
-        text.delete(1.0, END)
-        text.insert(1.0, barcodedata)
-
-        img = Image.open(filename)
-        img = img.resize((250, 250))
-        img = ImageTk.PhotoImage(img)
-
-        panel.image = img
-        panel.config(image=img)
+        decocdeQR = decode(Image.open(filename))
+        decodedt = decocdeQR[0].data.decode('utf-8')
+        text.delete(0.1,END)
+        text.insert(0.1,decodedt)
+    else:
+        onError()
+        
 
 
 def generate():
@@ -55,6 +55,7 @@ def generate():
         panel.image = img
         panel.config(image=img)
         text.delete(1.0, END)
+        onInfo()
 
 
 root = tk.Tk()  # Окно
